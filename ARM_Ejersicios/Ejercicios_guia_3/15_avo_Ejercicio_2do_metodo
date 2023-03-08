@@ -1,0 +1,31 @@
+		;_______________________EJERCICIO	15_________________________________
+		;Copiado	de una cadena de caracteres en memoria a otra cadena
+		;R1=DST
+		;R2=SCR
+		;R4=i
+		
+DST		DCB		'h','o','l','a','0'
+SCR		FILL		8
+		
+		LDR		R1,=DST
+		LDR		R2,=SCR
+		
+		BL		strcopy
+		end
+		
+strcopy	STMFD	SP!,{R4}
+		
+		;MOV		R4,#0
+		
+loop
+		LDRB		R4,[R1]
+		ADD		R1,R1,#1
+		STRB		R4,[R2]
+		ADD		R2,R2,#1
+		
+		CMP		R4,#0
+		BEQ		salir
+		B		loop
+		
+salir	LDMFD	SP!,{R4}
+		MOV		PC,LR

@@ -1,0 +1,27 @@
+		;_________________________EJERCICIO	4____________________________________
+		
+		MOV		R1,#4
+		MOV		R0,#10
+		
+		CMP		R1,#1
+		BEQ		case1
+		CMP		R1,#2	;Comparo cada caso del case
+		BEQ		case2
+		CMP		R1,#3
+		BEQ		case3
+		CMPHI	R1,#3
+		BHI		default
+case1
+		MOV		R0,R0,LSL #1
+		B		break
+case2
+		MOV		R0,R0,LSL #2
+		B		break
+case3
+		MOV		R0,R0,LSL #3
+		B		break
+default
+		MOVNE	R0,#-1
+		B		break
+		
+break	end

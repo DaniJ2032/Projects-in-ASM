@@ -1,0 +1,38 @@
+		;______________________EJERCICIO	19_____________________________________
+		;FUNCIONES	RECURSIVAS, EJEMPLO DE UNA
+		;R1=n
+		;R2=k
+		;R3=b
+		
+		;main()
+		MOV		R1,#2	;n=2
+		MOV		R2,#4	;k=4
+		
+		BL		recursiva
+		end		;fin de programa
+		
+recursiva
+		STMFD	SP!,{R3,LR}
+		
+		ADD		R3,R2,#2	;b=k+2
+		
+		CMP		R1,#0	;if(n==0)
+		BNE		else
+		
+		MOV		R3,#10	;b=10
+		MOV		R0,R3	;return b
+		LDMFD	SP!,{R3,LR}
+		ADD		R0,R0,R3	;recupero el caso base del stack
+		;ADD		SP,SP,#8	;no funca lo del libro
+		MOV		PC,LR
+else
+		ADD		R3,R3,R1		;b = b+n
+		SUB		R1,R1,#1		;n = n-1
+		ADD		R2,R2,#1		;k = k+1
+		BL		recursiva
+		
+		LDMFD	SP!,{R3,LR}
+		ADD		R3,R3,R0		; b = b + n + func(n-1,k+1)
+		MOV		R0,R3		;return b
+		MOV		PC,LR
+		

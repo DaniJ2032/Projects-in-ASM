@@ -1,0 +1,26 @@
+		;_________________________EJERCICIO_8________________________________
+		;Promedio	de los valores de un vector que toma datos de una memoria
+		
+dat		DCD		1,2,3,4,5,6,7,8	;Datos tipo word
+vect2	FILL		8 				;Vector vacio de 8 elementos
+		LDR		R1, =dat			;leo la memoria con R1= VECT
+		LDR		R2, =vect2 		;Asigno vect2 a R2
+		MOV		R0,#0			;i=0 variable para contador
+		
+loop		CMP		R0,#8
+		BGE		salir
+		
+		LDR		R3,[R1],#4	;Cargo el dato que tengo almacenado en R2 en R3
+		STR		R3,[R2],#4	;Aahora acomodo el vec vacio en R3
+		ADD		R4,R4,R3	;Sumo lo obtenido en R3 y lo almaceno en R4
+		
+		ADD		R0,R0,#1	;i++
+		B		loop
+		
+salir	MOV		R5,R4,LSR #3	;Una vez obtenido todos los num sumados lo divido por la cantida que son
+							;y obtengo el promedio --> 32/8 = 4.5 almaceno el 4
+		end
+		
+		
+		
+		

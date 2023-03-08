@@ -1,0 +1,109 @@
+			;		Este programa deja las palabras con mayúscula inicial, siempre y cuando tengan más de
+			;3		letras. Si tienen 2 o menos, las deja en minúsculas.
+			
+			;=====================================================================================================
+			;		Main
+			;=====================================================================================================
+			
+			;array	de bytes de 16 elementos
+			;VECT	DCB 'E', 'l', ' ', 'm', 'U', 'n', 'd', 'o', ' ', 'd', 'E', ' ', 'H', 'o', 'y', 0
+VECT			DCD		1830841413, 1868852821, 541418528, 7958344
+			
+			LDR		R0, =VECT
+			
+			BL		aMinuscula
+			
+			END
+			;=====================================================================================================
+			
+			
+			
+			
+			;=====================================================================================================
+			;		función aMinuscula
+			;R0=Rbase	/ R1=Contador de elem. array / R2=Raux (dest/fuente) / R3=Raux2 (dest/fuente)
+			;R4:Contador	de letras en palab.
+			;=====================================================================================================
+			
+aMinuscula
+			STMFD	SP!, {R4}
+			LDRB		R2, [R0]
+			
+loop1		CMP		R2, #0 ; Condición de salida: Raux (dest/fuent) igual al caracter nulo (fin de cad.)
+			BEQ		salir1
+			
+			;----------------------------------------------------------------------------------------------------
+			;Este	bloque cuenta cuántas letras tiene la palabra en cuestión y lo almacena en R4.
+			MOV		R3, R2
+			MOV		R4, #0 ; Inicializa el contador de letras por palabra R4.
+loop2		CMP		R3, #32 ; Compara si el carcater en R3 es el ESPACIO (código ASCII).
+			BEQ		salir2
+			CMP		R3, #0 ; Compara si el carcater en R3 es el NULO (final de palabra).
+			BEQ		salir2
+			ADD		R4, R4, #1 ; Incrementa el contador de letras por palabra R4.
+			LDRB		R3, [R0, R4] ; Carga en R3 el siguiente elemento del array.
+			B		loop2
+salir2
+			;----------------------------------------------------------------------------------------------------
+			
+			
+			;----------------------------------------------------------------------------------------------------
+			;Si		la palabra tiene menos de 3 letras
+			;		Si está en mayúscula la letra (65 <= ASCII <= 90)
+			;		Entonces se pasa a minúscula (se suman 32 al ASCII).
+			;Si		la palabra tiene 3 letras o más
+			;		La primer letra se pasa a mayúsucula si está en minúscula.
+			;		El resto de letras van a en minúscula
+			
+			CMP		R4, #3 ; Compara si la palabra tiene menos de 3 letras.
+			BGE		palabraLarga
+			
+			;palabraCorta
+loop3		CMP		R2, #32 ; Compara si el caracter en R2 es el ESPACIO (código ASCII).
+			BEQ		salir3
+			CMP		R2, #0 ; Compara si el carcater en R2 es el NULO (final de palabra).
+			BEQ		salir3
+			CMPNE	R2, #65 ; Si NO es el espacio, compara si es mayúscula (parte1).
+			CMPGE	R2, #90 ; Si pasó la prueba parte1, compara si es mayúscula (parte2).
+			ADDLE	R2, R2, #32 ; Al ser mayúscula, se pasa a minúscula.
+			STRBLE	R2, [R0]
+			
+			LDRB		R2, [R0, #1]! ; Carga en R2 el siguiente elemento del array en Raux1 (act. Rbase).
+			B		loop3
+			
+			;palabrLarga
+palabraLarga
+			;Pasa	a mayúscula la 1er letra de la palabra, si está en minúscula.
+			CMP		R2, #97 ; Compara si la 1er letra es minúscula (parte1).
+			BLT		noEsMinus
+			CMPGE	R2, #122 ; Si es posible que sea minúsc., compara si es minúscila (parte2).
+			SUBLE	R2, R2, #32 ; Al ser minúscula, se pasa a mayúscula.
+			STRBLE	R2, [R0]
+noEsMinus
+			LDRB		R2, [R0, #1]! ; Carga en R2 el siguiente elemento del array en Raux1 (act. Rbase).
+			
+			;		Pasa a minúscula el resto de las letras, si están en mayúscula.
+loop4		CMP		R2, #32 ; Compara si el caracter en R2 es el ESPACIO (código ASCII).
+			BEQ		salir4
+			CMP		R2, #0 ; Compara si el carcater en R2 es el NULO (final de palabra).
+			BEQ		salir4
+			CMPNE	R2, #65 ; Si NO es el espacio, compara si es mayúscula (parte1).
+			CMPGE	R2, #90 ; Si pasó la prueba parte1, compara si es mayúscula (parte2).
+			ADDLE	R2, R2, #32 ; Al ser mayúscula, se pasa a minúscula.
+			STRBLE	R2, [R0]
+			
+			
+			LDRB		R2, [R0, #1]! ; Carga en R2 el siguiente elemento del array en Raux1 (act. Rbase).
+			B		loop4
+			
+salir3
+salir4
+			;----------------------------------------------------------------------------------------------------
+			
+			LDRB		R2, [R0, #1]!
+			B		loop1
+			
+			
+salir1		LDMFD	SP!, {R4}
+			MOV		PC, LR
+			;=====================================================================================================

@@ -1,0 +1,32 @@
+		;====================USO	DE BUCLES WHILE Y FOR EN ASM====================
+		;R0 = pow , R1 = x
+		
+		;==========while=============
+;la variable en el while se la usa a modo de operacion
+;y el control es en base a una condicion como un while()		
+		MOV		R0, #1
+		MOV		R1, #0
+		
+new_cicle	CMP		R0, #128
+		BEQ		exit
+		LSL		R0,R0, #1
+		ADD		R1,R1, #1
+		B		new_cicle
+exit
+		end
+		;============FOR=============
+		;R2=sum,	R1 = i
+		;la variaciones de la variable que repite suele sen incrementales 
+		;como un tipico for()
+		MOV		R1,#0 ;Inicializamos antes de entrar al bucle
+		MOV		R2,#0
+		
+otro		CMP		R1,#10
+		BGE		salir ;condicion de mayor e igual (i>=10)
+		ADD		R2,R2,R1 ;sum +=sum+1
+		ADD		R1,R1,#1 ;(i+1)
+		B		otro ;volvemos a repetir el bucle
+salir
+		end
+		
+		

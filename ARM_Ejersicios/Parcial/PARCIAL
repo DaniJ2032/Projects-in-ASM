@@ -1,0 +1,56 @@
+			;_______________________PARCIAL_EJEMPLO_____________________________
+			;Uso		de los Registros en el ARM:
+			;Reg		no Preservador: R0 --> R3 y R12 pueden ser cambiados libremente
+			;		entre llamadas de funciones nada garantiza que
+			;		sus valores se mantengan,el R12 se usa como
+			;		registro basura
+			;
+			;Reg		Preservados:	R4 --> R11, R3(SP), R14(LR), 15(PC) Estos
+			;		registros deben ser preservados antes de
+			;		modificarlos y restaurar sus valores antes de
+			;		salir de la funcion a donde se los llamo
+			;____________________________________________________________________
+			
+			;Declaro	vectores
+			
+notasPP		DCD		5,7,8,9
+notasSP		DCD		6,9,8,7
+notasMy		FILL		16
+size			DCD		4
+			;main()
+			LDR		R0,=notasPP
+			LDR		R1,=notasSP
+			LDR		R2,=notasMy
+			LDR		R3,=size
+			LDR		R3,[R3]	;podemos usar el mismo registro R3 para lee memoria y almacenarse a si misma
+			
+			BL		nota_mayor
+			end
+			;r0=a,	r1=b mayor(a,b), r4= dir nota pp, r5 =dir notasp
+			;nota_mayor()
+nota_mayor
+			;debemos	preservar los datos de R0 y de R1 si o si
+			;usamos	la funciones STMxx LDRxx
+			STMFD	SP!,{R4,R5,LR} ;Indicamos que modificamos el stack pointery actualiza su valor, depaso salvamos R5,R6 y LS
+			MOV		R4,R0
+			MOV		R5,R1
+			
+loop			CMP		R3,#0
+			BEQ		salir
+			LDR		R0,[R4],#4
+			LDR		R1,[R5],#4
+			;STMFD	SP!,{R2,R3}
+			BL		mayor
+			
+			STR		R0,[R2],#4
+			SUB		R3,R3,#1
+			B		loop
+			
+salir		LDMFD	SP!,{R4,R5,LR}	;Recuperamos lo guardado en el stack
+			MOV		PC,LR
+			
+			;mayor()
+mayor
+			CMP		R0,R1
+			MOVLT	R0,R1
+			MOV		PC,LR

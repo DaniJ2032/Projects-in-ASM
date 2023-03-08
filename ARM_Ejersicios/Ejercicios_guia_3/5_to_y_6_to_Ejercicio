@@ -1,0 +1,27 @@
+		;____________________________EJERCICIO_5_______________________________-
+		MOV		R0, #0	;contador i=0
+		MOV		R1, #20	;Num a dividir (num)
+		
+new_cicle	CMPGT	R1,#1	;while(num>1)
+		BEQ		exit
+		LSR		R1,R1, #1 ;num/2
+		ADD		R0,R0, #1 ;i++
+		B		new_cicle
+exit		;end		;Fin de programa
+				
+		;___________________________EJERCISIO_6____________________________________
+		;R2=sum,	R1 = i
+		;la		variaciones de la variable que repite suele sen incrementales
+		;como	un tipico for()
+		MOV		R3,#0 ;Inicializo el i=0
+		MOV		R2,#0 ;sum
+		
+otro		CMP		R3,#100
+		BEQ		salir ;condicion de mayor e igual (i<100)
+		ADD		R2,R2,R3 ;sum +=sum+1
+		ADD		R3,R3,#1 ;(i+1)
+		B		otro ;volvemos a repetir el bucle
+		
+salir	end		;Fin de programa
+		
+		

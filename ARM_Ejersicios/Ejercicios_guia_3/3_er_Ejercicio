@@ -1,0 +1,16 @@
+		;_______________________EJERCICIO_3_________________________
+		MOV		R3,#0b1101
+		MOV		R4,#1
+		MOV		R6,#0
+		
+		MOV		R0,#1 ;Auxiliar
+		LSL		R0,R0,R4 ;Ponemos un 1 en el bit uno del R0
+		
+		AND		R3,R3,R0	;Verificamos el bit 2 del R3
+		CMP		R3,#0		;Comparo si es 0 el bit 2
+		BNE		salir
+		MOV		R0,#1		;Si es 0 inicializa el reg aux con 1
+		ORR		R6,R6,R0, LSL #16 ;Activo la alarma poniendo un 1 en el bit 16 del R6
+		
+salir	end		;fin de programa
+		

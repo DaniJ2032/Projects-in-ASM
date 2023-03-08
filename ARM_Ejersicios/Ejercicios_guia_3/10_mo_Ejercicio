@@ -1,0 +1,23 @@
+		;________________________EJERCICIO	10______________________________________
+		
+VECTW	DCD		1,2,3,4,5,6	;Vector de datos tipo WORD
+VECTB	DCB		0,2,4,1,3,5	;Vector de datos tipo byte
+		
+		LDR		R0,=VECTW
+		LDR		R1,=VECTB
+		MOV		R2,#6	;Size VectW
+		MOV		R3,#0	;i=0
+		
+loop		CMP		R3,R2
+		BGE		salir
+		LDRB		R4,[R1,R3]	;Avanzo de a 1byte
+		STRB		R4,[R1,R3]		
+		MOV		R4,R4,LSL #2	
+		
+		LDR		R5,[R0,R4]	
+		STR		R5,[R0]		
+		ADD		R6,R6,R5		;sumo las posiciones indicadas por VECTB
+		
+		ADD		R3,R3,#1		;inremento el puntero
+		B		loop
+salir	end

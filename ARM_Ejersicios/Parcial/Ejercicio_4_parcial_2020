@@ -1,0 +1,55 @@
+			;_______________________EJERCICIO	PARCIAL 2020________________________
+			;Almaceno	el promedio de dos notas en parciales en un vector
+			;_____________________________________________________________________
+			
+NOTASPP		DCD		30,70,50,90
+NOTASSP		DCD		20,40,60,80	;Variables en memoria
+NOTASPF		FILL		8
+SIZE			DCD		4
+			
+			;main()
+			LDR		R0,=NOTASPP
+			LDR		R1,=NOTASSP	;Almaceno al direcion de memoria de los vect de notas
+			LDR		R2,=NOTASPF
+			LDR		R3,=SIZE		;tamaño de los vectores
+			LDR		R3,[R3]
+			
+			BL		nota_final
+			end		;final de programa
+			
+			;==========Funcion	Nota FInal()====================
+nota_final
+			STMFD	SP!,{LR,R4,R5,R6,R7}
+			
+			MOV		R4,#0	;i=0
+			
+loop			CMP		R4,R3
+			BGE		salir
+			
+			LDR		R5,[R0],#4		;lo leido por R5 o almaceno en R1
+			LDR		R6,[R1],#4		;lo leido por R6 o almaceno en R2
+			STMFD	SP!,{R0,R1,R2,R3}	;Salvo la varible R4 por precaucion
+			MOV		R0,R5
+			MOV		R1,R6
+			BL		promedio
+			MOV		R7,R0			;Guardo lo retornado a R7
+			LDMFD	SP!,{R0,R1,R2,R3}
+			STR		R7,[R2],#4		;Lo retornado por la funcion promedio() lo guardo
+			ADD		R4,R4,#1			;i += 1
+			B		loop				;repito el bucle
+salir
+			LDMFD	SP!,{LR,R4,R5,R6,R7}	;recupero el stack
+			MOV		PC,LR				;retorno al main()
+			;=================================================
+			
+			;==========funcion	promedio()============
+promedio
+			
+			ADD		R2,R0,R1		;Almaceno la suma de las dos notasen R2
+			MOV		R0,R2,LSR #1	;Obtengo el promedio
+			MOV		PC,LR		;retorno la variable promedio
+			;========================================
+			
+			
+			
+			

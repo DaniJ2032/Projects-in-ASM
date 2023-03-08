@@ -1,0 +1,60 @@
+			;_________________________EJERCICIO	16_______________________________
+			;Tenermos	dos vectores con notas y almacenamos la mayor en otro vec
+			;R1		=NOTAS_PP
+			;R2		=NOTAS_SP
+			;R3		=NOTA_MAYOR
+			
+			;Declaracion	de variables en memoria
+NOTAS_PP		DCD		4,7,3,9
+NOTAS_SP		DCD		6,3,4,8
+NOTA_MY		FILL		16			
+			;void main()
+			
+			LDR		R1,=NOTAS_PP
+			LDR		R2,=NOTAS_SP	;Asignacion de los valores en memoria
+			LDR		R3,=NOTA_MY
+			MOV		R12,#4		;tamaño de los vectores de notas	
+			BL		nota_mayor	; void nota_mayor()
+			
+			end					;return 0; -> fin de main()
+
+			
+nota_mayor	;void	nota_mayor(int NOTAS_PP[],int NOTAS_SP[],int NOTAS_MY[],int size)
+			
+			STMFD	SP!,{R4,R5,LR}
+			
+			MOV		R0,#0	;i=0
+			MOV		R4,R1	;&NOTA_PP en R4
+			MOV		R5,R2	;&NOTA_SP en R5
+			
+loop			CMP		R0,R12	;i<4
+			BGE		salir				
+			LDR		R1,[R4],#4	;Almaceno lo apuntado por R4 en R1
+			LDR		R2,[R5],#4	;Almaceno lo apuntado por R5 en R2
+			
+			STMFD	SP!,{R0,LR}	;Salvo R0 para despues
+			BL		mayor		;mayor()
+			
+			STR		R0,[R3],#4	;con STR escribo en R3 el contenido de R0
+			LDMFD	SP!,{R0,LR}	;recupero el valor de R0 para seguir contando
+			ADD		R0,R0,#1		;incremento el contador
+			B		loop			
+salir
+			LDMFD	SP!,{R4,R5,LR}	;Recupero lo guardado en el Stack
+			MOV		PC,LR		;retorno al main()
+
+			;int mayor()
+mayor		CMP		R1,R2	;R1>R2
+			MOVGT	R0,R1	;almaceno R1 en R0 para retornarlo
+			MOVLT	R0,R2	;sino almaceno R2 en R0
+			MOV		PC,LR
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

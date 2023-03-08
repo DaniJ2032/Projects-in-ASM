@@ -1,0 +1,43 @@
+		;=================ESCRITURA	Y LECTURA EN MEMORIA======================
+		;EN		EL LISTADO DE ISNTRUCCIONES DEL ARM TENEMOS LAS INSTRUCCIONES
+		;DE		ACCESO A LA MEMORIA REVISAR¡¡¡
+		;=====================================================================
+		;==========ESCRITURA	Y LECTURA SIMPLE EN MEMORIAS================
+		;LDR		= LECTURA TIPO WORD 32bits
+		;STR		= ESCRITURA DE TIPO WORD
+		;LDRB	= LECTURA DE TIPO BYTE	8bits
+		;STRB	= ESCRITURA DE TIPO BYTE
+		;EN		EL VISUAL SOLO SE PERMITE ESTAS 3 INSTRUCCIONES PERO EXISTEN MAS
+		;================================================================
+		;===============MODOS	DE DIRECCIONAMIENTO===================
+		;[Rb]	--> direccionamiento entre registros
+		;[Rb,#N]	--> por offset
+		;[Rb,#N]!	--> Pre indexado
+		;[Rb],OFFSET	--> Post Indexado
+		;A		su vez los offset pueden ser:
+		;N#		--> 	  Numerico
+		;Rx		--> 	  Registro
+		;Rx,LSL	--> Registro Escalado
+		;================================================================
+		;=================DECLARACION	DE LOS DATOS EN MEMORIA==============
+		;Veremos	directivas de preprocesador
+		;DCD		--> Declaracon de datos de tipo word sin uso de #
+		;DCB		--> Declaracion de tipo byte sin uso de #
+		;FILL	--> Resaervo un espacio en memoria reservando todo ceros de a 1byte por valor
+		;ADR		-->
+		;EQU
+		;==============================================================
+		;===========EJEMPLO===========
+dat		DCD		1,3,5,8,6,9,10
+		;R1		= Reg. base , R0 = Reg. Destino
+		LDR		R1,=dat  ;con esto guardamos el primer elemento de dat
+		;MOV		R1,#dat ;nos devuelve la direccion de memoria del primer elemento del vec.
+		;Modo	de direccionamiento por offset
+		;R1		lo usamos como puntero y en R0 guardamos el dato apuntado por R1
+		LDR		R0,[R1,#4]  ;Modo de direccionamiento por Offset cada valor de #N es 1byte ?or eso para corrernos 3 lugares debemos corrernos cada 4 byte 3 lugares = (3x4bytes = 12bytes)
+		LDR		R0,[R1,#12]! ;Modo de direccionamiento pre-indexado primero carga el dato actualizado y luego se actualiza la base del puntero
+		LDR		R0,[R1],#4   ;Modo de direccionamiento de Post-Indexado primero se guardara el dato que esta de base y luego se actualiza cuando la base del puntero
+		;Tambine	nos podemos desplazar con numero negativos yendonos hacia la izquierda
+		LDR		R0,[R1,#-8]  ;Mem muevo 8bytes a la izquierda y guardo su valor
+		;Tambien podemos en vez de usar un #N usar un Reg Rx para ir incrementandolo y avanzando en la memoria
+		end

@@ -1,0 +1,23 @@
+		;_________________EJEMPLO	DE RECURSIVIDAD_______________________
+		;FACTORIAL	DE UN NUMERO
+		
+		MOV		R0,#5
+		
+		BL		FACTORIAL
+		END
+		
+		
+		
+		
+FACTORIAL	STMFD	SP!,{R0,LR}
+		CMP		R0, #1
+		BGT		ELSE
+		MOV		R0, #1
+		ADD		SP, SP, #8
+		MOV		PC, LR
+ELSE
+		SUB		R0, R0, #1
+		BL		FACTORIAL
+		LDMFD	SP!,{R1,LR}
+		MOV		R0,R1,LSL R0
+		MOV		PC, LR

@@ -1,0 +1,13 @@
+		MOV		R0, #5
+		MOV		R1, #8
+		
+		CMP		R0,R1
+		BLT		else
+		ADD		R0, R0, R1
+		B		fin
+else
+		SUB		R0, R0, R1
+		
+fin
+		end
+		

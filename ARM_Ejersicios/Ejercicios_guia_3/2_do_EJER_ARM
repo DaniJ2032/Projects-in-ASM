@@ -1,0 +1,28 @@
+		;=============================EJERCICIO_2============================
+		;SUMAR	2 NUM DE 64 BITS DISPUESTOS EN NUM1 = R1 Y R2
+		;NUM2	= R3 Y R4
+		;ALMACENA	EL RESULTADO EN RES = R5, R6
+		;====================================================================
+		
+		
+		;=================CONSTANTES=====================
+;Declaramos en memoria una cte de tipo word		
+NUM11	dcd		0x1231AAAA ;1ra parte del NUM1 de 64bit (parte alta)
+NUM12	dcd		0xB3423433 ;2da parte del NUM1 de 64bit (parte baja) 
+NUM21	dcd		0xFF232323 ;Misma analogia	
+NUM22	dcd		0x23323111
+		;================================================
+		;===================CODE=========================
+		MOV		R0, #NUM11	;cargo en RO la direcc de memoria de NUM11
+		LDR		R1, [R0]		;leo el contenido de NUM11 con el puntero R0 y lo almaceno en R1
+		MOV		R0, #NUM12	;Mismo proceso que al principio
+		LDR		R2, [R0]
+		MOV		R0, #NUM21
+		LDR		R3, [R0]
+		MOV		R0, #NUM22
+		LDR		R4, [R0]
+		
+		ADDS		R5,R1,R3	;Sumo las partes bajas del num de 64 bits y seteo las banderas
+		ADC		R6,R2,R4	;sumo las partes altas de los num de 64 bits mas el acarreo		
+		end
+		;=================================================

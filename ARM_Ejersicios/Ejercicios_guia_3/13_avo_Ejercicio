@@ -1,0 +1,88 @@
+				;________________________________sub	funciones__________________________________
+				;BL		--> Branch linker se usa para saltar a funciones y modifica el contenido de
+				;Link	register
+				;MOV		PC,LR	--> Equivale al return 0 lo debemos hacer para asegurarnos de
+				;volver	al punto de partida cuando se llamo el BL
+				;==============================================================================
+				;REGISTROS	PRESERVADOS
+				;R4-->R11	y LR. Si lo vamos a utilizar los debemos guardar en el stack para no perderlos
+				;		en este caso se pasan los valores y la "funcion llamada"debe guardar
+				;		los valores
+				;REGISTROS	NO PRESERVADOS
+				;R0_R3	Y R12 --> En este caso la "funcion llamadora" debe preservar los valores
+				;		antes de hacer el pasaje de los valores
+				;_______________________________________________________________________________
+				;Parametros	que se pasan siempre se guardan en R0,R1,R2,R3 en ese orden
+				;Valor	de retorno en R0
+				;main	:)
+				;BL		funcion_perro
+				;funcion_perro	......
+				
+				;_________________________________EJERCICIO_13__________________________________
+				
+				MOV		R1, #10
+				MOV		R2, #15
+				MOV		R3, #20
+				
+				BL		master_funcion1
+				BL		master_funcion2
+				BL		master_funcion3
+				BL		master_funcion4
+				
+				end		;fin de funcion
+				
+master_funcion1					;20<R1<100
+				CMP		R1, #100
+				MOVGT	R0, #1
+				MOVGT	PC,LR
+				CMP		R1, #20
+				MOVLT	R0, #1
+				MOVLT	PC,LR
+				MOV		R0,#0	;R0=0 comparacion correcta
+				MOV		PC, LR	;R0=1 comparacion incorrecta
+				
+master_funcion2
+				CMP		R2, #20	;20<R1 OR R1<100
+				MOVLT	R0, #1
+				MOVGT	R0, #0
+				BGT		salir_funcion_2
+				
+				CMP		R1, #100
+				MOVLT	R0, #0
+				BLT		salir_funcion_2
+				MOVGT	R0, #1
+salir_funcion_2	MOV		PC,LR
+				
+				
+master_funcion3
+				CMP		R1, #10	;R1=10 or R1=15 or R1=20
+				MOVEQ	R0, #0
+				BEQ		salir_funcion_3
+				MOVNE	R0, #1
+				
+				CMP		R1, #15
+				MOVEQ	R0, #0
+				BEQ		salir_funcion_3
+				MOVNE	R0, #1
+				
+				CMP		R1, #20
+				MOVEQ	R0, #0
+				BEQ		salir_funcion_3
+				MOVNE	R0, #1
+salir_funcion_3	MOV		PC,LR
+				
+master_funcion4
+				CMP		R1,	#10		;R1=10 and R2=15 and R3=20
+				MOVEQ	R0,	#0
+				MOVNE	R0,	#1
+				BNE		salir_funcion_4
+				
+				CMP		R2,	#15
+				MOVEQ	R0,	#0
+				MOVNE	R0,	#1
+				BNE		salir_funcion_4
+				
+				CMP		R3,	#20
+				MOVEQ	R0,	#0
+				MOVNE	R0,	#1
+salir_funcion_4	MOV		PC, LR	;R0=1 comparacion incorrecta

@@ -1,0 +1,64 @@
+				;_________________________EJERCICIO	18________________________________________
+				;Pasar	a mayuscula las primeras letras de una oracion, salo palabas de log<3
+				
+VECT				DCB		'E','l',' ','m','U','d','O',' ','D','e',' ','h','O','y'
+				;salida	esperada VECT = el Mundo de Hoy
+				;los		datos se deben sobreescribir en la cadena original
+				;los		carcteres mayuscula van desde 0x41 -> 0x5A
+				;los		caracteres minuscula van desde el 0x61 -> 0x7A
+				
+				;main()
+				LDR		R1,=VECT	;lo asigno al registro R1
+				BL		aminuscula
+				
+				end		;fin de programa
+				
+aminuscula
+				STMFD	SP!,{R4,R5}
+				
+				MOV		R0,#0	;i=0
+				MOV		R2,#0	;variable aux
+				MOV		R4,R1	;puntero para direccion de memoria de R1
+				
+loop				CMP		R0,#14
+				BGE		salir
+				
+				LDRB		R1,[R4,R0]	;almaceno en R1 lo leido por R4
+				
+				CMP		R1,#' '	;pregunto si hay un espacio
+				BEQ		sigo
+				
+				CMP		R1,#0x41
+				BLT		salir	;error hay un caracter especial
+				CMP		R1,#0x5A
+				BGE		quizas_minuscula
+				ADDLT	R1,R1,#0x20
+				
+				STRB		R1,[R4,R0]
+				B		sigo
+				
+quizas_minuscula
+				CMP		R1,#0x61
+				BLT		salir		;error caracter especial
+				CMP		R1,#0x7A
+				BGE		salir		;error caracter especial
+				;MOV		R1,R1		;muevo a R4 el caracter minuscula
+				STRB		R1,[R4]	;lo almaceno tal como esta
+				
+				
+sigo				ADD		R0,R0,#1
+				B		loop
+salir
+				LDMFD	SP!,{R4,R5}
+				MOV		PC,LR
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				

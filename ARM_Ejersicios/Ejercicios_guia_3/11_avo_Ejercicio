@@ -1,0 +1,19 @@
+		;______________________________EJERCICIO	11___________________________________
+		
+VECT		DCB		'h','o','l','a','0'	;vector de tipo byte
+		
+		
+		LDR		R0,=VECT
+		
+		
+loop		LDRB		R1,[R0]
+		CMP		R1,#0
+		BEQ		salir
+		
+		CMP		R1,#'a'
+		SUBHS	R1,R1,#0X20	;Cambiamos a mayuscula
+		STRBHS	R1,[R0]
+		ADD		R0,R0,#1
+		B		loop
+		
+salir	end

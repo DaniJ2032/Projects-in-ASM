@@ -1,0 +1,81 @@
+;===================EJERCICIO	1 if else con saltos condicionales=======================
+		MOV		R0, #3
+		MOV		R1, #5
+		
+		CMP		R0,R1
+		BGE		else    		;if(g>=h)
+		ADD		R0, R0, R1	;g = g+h
+		B		fin_1
+else
+		SUB		R0, R0, R1	;g = g-h
+fin_1
+;================Ahora con multiplicacion con saltos condicionales========================
+		MOV		R2, #5
+		MOV		R3, #7
+		
+		CMP		R2,R3
+		BLT		else2		;if(g<h)
+		ADD		R3, R3,#1 	;h = h+g
+else2
+		MOV		R3,R3,LSL #1	;h = h*2 --> Un corrimiento a la izq equivale a *2
+		
+;=================EJERCICIO 1 INTRUCCION CONDICIONAL===================
+		CMP		R0,R1
+		ADDGE	R0,R0,R1
+		SUBLT	R0,R0,R1
+;==================MULTIPLICACION CON CONDICIONALES===========================
+		CMP		R2,R3
+		ADDGE	R3,R3,#1
+		LSLLT	R3,R3,#1
+;===================================FIN DEL PUNTO 1=================================
+		
+;=============================uso de un switch case ==================
+
+		MOV		R5,#1
+		MOV		R6,#0
+;comp1=case 1:
+		CMP		R5,#1
+		BNE		comp2
+		MOV		R6,#10
+		B		fin
+comp2 ;case 2:
+		CMP		R5,#2
+		BNE		default
+		MOV		R6,#20
+		B		fin
+default
+		MOV		R5,#30
+fin		end
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

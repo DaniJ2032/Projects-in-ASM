@@ -1,0 +1,41 @@
+					;R0		-> &VECT
+					;R1		-> size
+					;R2		-> i
+					;R3		-> Suma
+					;R4		-> VECT[i] -->SE DEBE PRESERVAR
+					
+VECT					DCD		1,2,3,4,5,6,7,8
+size					DCD		8
+					
+					;void	main(){
+					LDR		R0,=VECT			 ;int VECT={1,2,3,4,5,6,7,8};
+					LDR		R1,=8			 ;int size = 8;
+					BL		SumarPosicionesPares ;suma=SumarPosicionesPares(&VECT,size);
+					
+					end		;return	0 }
+					
+					;SumarPosicionesPares()
+SumarPosicionesPares
+					STMFD	SP!,{R4,LR}	;void SumarPosicionesPares(&VECT,size){
+					MOV		R2,#0		;int i 	= 0;
+					MOV		R3,#0		;int suma = 0;
+					
+while				CMP		R1,R2		;while(i<size){
+					BLE		salir
+					
+					LDR		R4,[R0],#8	;VECT[i]
+					ADD		R3,R3,R4		;suma = suma+VEC[i]
+					ADD		R2,R2,#2		; i+=2;
+					B		while		;repito bucle
+salir									;}
+					MOV		R0,R3
+					LDMFD	SP!,{R4,LR}	;Recuperamos lo guardado en el stack
+					MOV		PC,LR		;return suma
+					
+					
+					
+					
+					
+					
+					
+					

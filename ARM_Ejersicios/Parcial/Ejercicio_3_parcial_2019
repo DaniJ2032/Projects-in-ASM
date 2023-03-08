@@ -1,0 +1,61 @@
+			;________________EJERCICIO 3 PARCIAL SEBA_________________
+			
+			;variables	en memoria
+VECT			DCD		1,2,3,4,5,6,7,8,9,10
+PAR			FILL		12
+IMPAR		FILL		12
+Size			DCD		10
+			
+			;main()===========================
+			LDR		R0,	=VECT
+			LDR		R1,	=PAR
+			LDR		R2,	=IMPAR
+			LDR		R3,	=Size
+			LDR		R3,[R3]
+			
+			BL		seleccionar
+			
+			end		;fin de main()
+			
+			;==========Funcion	seleccionar()
+seleccionar
+			STMFD	SP!,{R4,R5,R6,LR}	;CABECERA DE FUNCION
+			
+			MOV		R4,#0	;i=0
+			
+loop			CMP		R4,R3	;i<10
+			BGE		salir
+			LDR		R5,[R0],#4	;Lo leido por R4 lo almaceno en R1
+			STMFD	SP!,{R0,R1,R2,R3}	;Recupero del stack
+			MOV		R0,R5		;muevo a R0 el valor que le paso a numpar
+			
+			BL		numPar	;me voy a la funcion
+			MOV		R6,R0	;lo retornado por numpar lo muevo a R0
+			LDMFD	SP!,{R0,R1,R2,R3}	;Recupero del stack
+			
+			CMP		R6,#1	;comparo si lo retornado es un 1
+			BNE		else
+			STR		R5,[R2],#4
+			BEQ		seguir
+			
+else			CMP		R6,#0
+			STR		R5,[R1],#4	;De lo contrario almaceno en pares
+seguir
+			ADD		R4,R4,#1
+			B		loop
+salir
+			LDMFD	SP!,{R4,R5,R6,LR}
+			MOV		PC,LR
+			;======================================
+			
+			;=============Funcion	numPar=============
+numPar
+			AND		R0,R0,#1
+			MOV		PC,LR
+			;========================================
+			
+			
+			
+			
+			
+			

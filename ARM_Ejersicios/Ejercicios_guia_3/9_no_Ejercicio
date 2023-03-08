@@ -1,0 +1,29 @@
+		;_________________________EJERCICIO_9________________________________
+		;BUscar	el numero mayor en un vector
+		
+		;Vect	de memoria
+vect1	DCD		1,3,6,7,12,34,5,76,2,0 	;Vector de datos VECT
+vect2	FILL		12					;Vector vacio de 10 elementos
+		
+		;Lectura	y asignacion de la memoria		
+		LDR		R1,=vect1	;VECT1 a R1
+		LDR		R2,=vect2	;VECT2 a R2
+		MOV		R0,#0 	;i=0 contador de bucle
+		
+		LDR		R3,[R1]	;Asigno el primer valor
+		MOV		R4,R3	;lo muevo a una variable Aux de comparacion
+		;for(i=0;i<10,i++)		
+loop		CMP		R0,#10
+		BGE		salir
+		
+		LDR		R3,[R1,#4]!	;Asigno el contenido de R2 en R3
+		STR		R3,[R2,#4]!	;Acomodo el vect vacio en R3 comparacion para encontrar el mayor valor
+		
+		CMP		R3,R4		;Comparo lo que tengo en R3 con R4= aux
+		MOVGT	R4,R3		;Si es mayor lo que tenemos en R3 lo pasamos a R4
+				
+		ADD		R0,R0,#1		;incremento el contador
+		B		loop
+salir	end
+		
+		
